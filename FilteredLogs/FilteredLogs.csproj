@@ -20,6 +20,7 @@
     <!-- Shortens and anonymizes paths in debug symbols relative to the project directory. Breakpoints will not work, however. -->
     <PathMap Condition="'$(Configuration)' == 'Release'">$(MSBuildProjectDirectory)=/</PathMap>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Description>Filtered Logs plugin for Silksong.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>icon.png</PackageIcon>
     <PackageId>Silksong.FilteredLogs</PackageId>
