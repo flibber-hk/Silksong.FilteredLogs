@@ -6,7 +6,13 @@ This mod only applies when the caller has been built in debug mode.
 
 ## Usage
 
-This mod should be declared as a package reference (TODO - include Nuget link).
+This mod should be declared as a package reference by placing the following line in your csproj file:
+
+```
+<PackageReference Include="Silksong.FilteredLogs" Version="1.0.0" />
+```
+
+See [the nuget page](https://www.nuget.org/packages/Silksong.FilteredLogs) for the most up to date version.
 
 This mod should be declared as a soft dependency, to ensure that it loads before
 your mod. To do so, place the following attribute on your plugin class, below
