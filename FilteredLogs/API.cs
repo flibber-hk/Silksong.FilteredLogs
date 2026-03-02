@@ -54,6 +54,26 @@ public static class API
     }
 
     /// <summary>
+    /// Remove all logs whose source does not begin with the supplied prefix.
+    ///
+    /// This method does not apply if the caller has been built in release mode.
+    /// </summary>
+    /// <param name="prefix">The prefix to check for.</param>
+    /// <param name="keepLevel">Keep logs matching this log level, regardless of the log source.</param>
+    /// <param name="filterTargets">Log listeners to apply to.</param>
+    [SD.Conditional("DEBUG")]
+    public static void ApplyFilter(
+        string prefix,
+        LogLevel keepLevel,
+        FilterTargets filterTargets = FilterTargets.Console
+        )
+    {
+        bool eventSelector(LogEventArgs e) => e.Source.SourceName.StartsWith(prefix) || ((e.Level & keepLevel) != 0);
+
+        FilteredLogsPlugin.ApplyFilterInternal(eventSelector, filterTargets, $"Prefix: {prefix}");
+    }
+
+    /// <summary>
     /// Remove all logs whose source name do not match the supplied predicate.
     /// 
     /// This method does not apply if the caller has been built in release mode.
