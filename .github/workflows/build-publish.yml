@@ -120,6 +120,7 @@ jobs:
     needs:
       - build
     runs-on: ubuntu-latest
+    environment: production
     if: |
       (
         github.event_name == 'push' && 
@@ -132,8 +133,6 @@ jobs:
       )
     # Do not substitute your NuGet API key in this workflow! Instead, add a secret to your repository
     # https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets
-    env:
-      NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
 
     steps:
     - name: Setup .NET
@@ -145,11 +144,16 @@ jobs:
       with:
         name: nuget
         path: nuget/
-    - name: Publish to NuGet
-      if: env.NUGET_API_KEY != ''
+    - name: NuGet Login
+      id: login
+      uses: NuGet/login@v1
+      with:
+        user: ${{ secrets.NUGET_USER }}
+    - name: Publish NuGet
+      id: publish
       run: |-
         dotnet nuget push nuget/*.nupkg \
-          --api-key $NUGET_API_KEY \
+          --api-key ${{ steps.login.outputs.NUGET_API_KEY }} \
           --source https://api.nuget.org/v3/index.json
 
   # Publish to GitHub releases to keep release history on the repository (needed for this workflow to work properly
